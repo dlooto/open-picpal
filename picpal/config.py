@@ -10,7 +10,7 @@ MODEL_FILE_NAME = 'saved_model.h5'
 
 
 # Hyper-parameters: dimensions of InceptionV3.
-IMG_WIDTH, IMG_HEIGHT = 299, 299*3
+IMG_WIDTH, IMG_HEIGHT = 256, 256
 BATCH_SIZE = 32
 EPOCHS = 20
 
