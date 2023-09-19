@@ -8,7 +8,7 @@
 
 OpenPicPal is an open-source tool for image training and automatic classification.
 
-As a Python-based project, the goal of OpenPicPal is to train and acquire a necessary classification model utilizing the InceptionV3 base-model and a previously prepared image dataset, followed by automating image classification using the resultant model.
+OpenPicPal, being a Python-based project, aims to train and obtain a required classification model by leveraging the `InceptionV3` base model and a pre-prepared image dataset. And then, it automates image classification using the resulting model.
 
 This image classification project involves the following key steps:
 1. Choose a Base Model: For this project, InceptionV3 serves as the base model (considering its balance between accuracy and runtime performance, with not too many parameters).
