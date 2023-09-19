@@ -6,6 +6,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 TRAIN_DATA_DIR = os.path.join(PROJECT_ROOT, 'data/train')
 VALIDATION_DATA_DIR = os.path.join(PROJECT_ROOT, 'data/validation')
 SAVED_MODEL_DIR = os.path.join(PROJECT_ROOT, 'data/saved_model')
+
 MODEL_FILE_NAME = 'new_model.h5'
 
 

@@ -14,7 +14,7 @@ logs
 .pytest_cache
 *.rdb
 
-.egg-info
+*.egg-info
 build
 dist
 
