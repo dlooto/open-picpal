@@ -55,8 +55,8 @@ git clone git@github.com:dlooto/open-picpal.git
 3. Create the data directory structure as described in "Data Preparation." The `data/saved_model/` directory is used to store trained model file.
 4. Create and modify configuration files:
 ```shell
-cp open-picpal/config.py.example  open-picpal/config.py     # Copy the example file
-vi open-picpal/config.py         # Modify the relevant parameters
+cp picpal/config.py.example  picpal/config.py     # Copy the example file
+vi picpal/config.py         # Modify the relevant parameters
 ```
 5. Install Python libraries using pip:
 ```shell
