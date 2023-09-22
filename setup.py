@@ -6,7 +6,7 @@ setup(
     name='open-picpal',
     version='0.1.0',
     author='Jon. Shon',
-    author_email='xjbean@email.com',
+    author_email='xjbean@gmail.com',
     description='An open-source tool for image training and automatic classification',
     packages=find_packages(),
     install_requires=[
