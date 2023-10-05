@@ -2,69 +2,69 @@
 
 <br>
 
-[中文文档](README.md) | [English README](README_EN.md)
+[中文文档](README_CN.md) | [English README](README.md)
 
 <br>
 
-OpenPicPal是一个用于图片训练和自动分类的开源软件项目。
+OpenPicPal is an open-source tool for image training and automatic classification.
 
-作为一个Python项目，OpenPicPal基于InceptionV3基础模型，可以在使用者自身准备的图片数据集上训练出需要的图片分类模型，然后基于结果模型进行图片分类。
+OpenPicPal, being a Python-based project, aims to train and obtain a required classification model by leveraging the `InceptionV3` base model and a pre-prepared image dataset. And then, it automates image classification using the resulting model.
 
-本图片分类项目，包含以下关键步骤：
-1. 选择一个基础模型：如本项目以InceptionV3为基础模型（考虑到其在准确率和运行性能上的均衡，参数不算多等）
-2. 准备图片数据：包括训练、验证、测试等所需的图片集
-3. 训练模型：生成需要的结果模型
-4. 图片分类/预测：使用结果模型进行分类/预测
+This image classification project involves the following key steps:
+1. Choose a Base Model: For this project, InceptionV3 serves as the base model (considering its balance between accuracy and runtime performance, with not too many parameters).
+2. Prepare Image Data: This includes the preparation of image datasets for training, validation, testing, etc.
+3. Train the Model: Generate the required result model.
+4. Image Classification/Prediction: Utilize the resulting model for image classification/prediction.
 
-## 数据准备
-图片数据来源，可根据自身业务需要，从互联网上搜索开源数据集或自行写爬虫获取。
-
-将准备好的图片数据，存入以下目录结构中:
+## Data Preparation
+The source of image data can be obtained by searching for open-source datasets on the internet or by writing custom web crawlers.
+Prepare the image data and organize it into the following directory structure:
 ```
 data/
-    |__saved_model/     # 训练结束后的模型文件存放目录
-    |__train/           # 训练图片集存入此目录下的各子目录中
-        |__book             
-        |__cat              
-        |__digit            
-        |__movie            
+    |__saved_model/     # Directory for saving trained model files
+    |__train/           # Directory for training image datasets categorized into subdirectories
+        |__book
+        |__cat
+        |__digit
+        |__movie
         ……
-    |__validation/      # 验证图片集, 注意保持与train目录中同样的子目录结构
-```    
+    |__validation/      # Validation image datasets, ensuring the same subdirectory structure as 'train'
+```
 
-#### 图片集配置
-* `train`各子目录中存放对应类别的图片文件，如`book/`目录下存放所有关于图书的图片
-* 有多少个分类就要准备多少个子目录的图片
-* 从`train`各子目录里挑选约1/4 ~ 1/3的图片数量放入`validation`对应子目录里。如`train/book/`中有100张图片，则可以考虑从中取出25张图片放入`validation/book/`目录，形成验证图片集。
-* 应确保`validation`子目录数量与`train`中子目录数量一致，且维持一定的比例关系（如保持验证集图片量为训练集图片量的1/4 ~ 1/3）
-* 一般来说，图片量越大分类效果越好，但考虑到训练时间及性能，应根据业务情况选择图片量
-* 如果有新的分类，则增加新的子目录放于`train`和`validation`里
+#### Image Dataset Configuration
+* Each subdirectory under 'train' should contain image files corresponding to the respective categories (e.g., 'book/' directory contains all images related to books).
+* Prepare as many subdirectories as there are categories.
+* Select approximately 1/4 to 1/3 of the images from 'train' subdirectories and place them in corresponding 'validation' subdirectories. For example, if there are 100 images in 'train/book/', consider moving 25 images to 'validation/book/' to create the validation dataset.
+* Ensure that the number of subdirectories in 'validation' matches the number in 'train', and maintain a certain proportion (e.g., validation dataset size is 1/4 to 1/3 of the training dataset).
+* Generally, more images lead to better classification performance, but consider training time and performance when deciding on the dataset size.
+* If you have new categories, add new subdirectories in 'train' and 'validation'.
 
-## 开发环境
-0. 必须的程序包：
+## Development Environment
+0. Required python libraries:
 ```shell
     python==3.9.2
     keras==2.11.0
     tensorflow==2.11.0
 ```
-1. Clone代码：`git clone git@github.com:dlooto/open-picpal.git`
-2. 切换到项目根目录: `cd open-picpal`
-3. 创建上述"数据准备"中的data目录结构，准备好图片数据集. 其中`data/saved_model/`为训练结束后的模型文件存放目录。
-4. 创建并修改配置文件:
 
+1. Clone code: 
+```
+git clone git@github.com:dlooto/open-picpal.git
+```
+2. Navigate to the project root directory: `cd open-picpal`
+3. Create the data directory structure as described in "Data Preparation." The `data/saved_model/` directory is used to store trained model file.
+4. Create and modify configuration files:
 ```shell
-cp open-picpal/config.py.example  open-picpal/config.py     # 拷贝示例文件
-vi open-picpal/config.py         # 修改相关参数
+cp picpal/config.py.example  picpal/config.py     # Copy the example file
+vi picpal/config.py         # Modify the relevant parameters
+```
+5. Install Python libraries using pip:
+```shell
+pip install -r requirements.txt
 ```
 
-5. pip安装python相关的库
-```
-pip install -r requirements.txt 
-```
-
-## 训练与分类
-
-1. 设置分类标签
+## Training and Classification
+1. Set Class Labels:
 ```python
 # picpal/config.py
 CLASS_LABELS = {
@@ -74,47 +74,51 @@ CLASS_LABELS = {
     3: "movie",
 }
 ```
-* 确保config.py中`CLASS_LABELS`配置与`train`和`validation`中子目录名一致，比如你可以修改标签"book"为"books", 但应确保train、validation里的子目录也一并修改。
 
-2. 修改训练参数：
+* Ensure that the `CLASS_LABELS` configuration in config.py matches the subdirectory names in 'train' and 'validation.' You can modify the label "book" to "books," for example, but make sure to update the subdirectory names in both 'train' and 'validation' accordingly.
+
+2. Modify Training Parameters:
 ```python
-MODEL_FILE_NAME = 'new_model.h5'    # 图片分类时所用的模型文件名    
+MODEL_FILE_NAME = 'new_model.h5'    # Model file name used for image classification
 
 IMG_WIDTH, IMG_HEIGHT = 256, 256     
 BATCH_SIZE = 32                      
 EPOCHS = 20                         
 ```
-* 其中，参数设置`(IMG_WIDTH, IMG_HEIGHT)`是InceptionV3模型所要求的输入图片尺寸, 你需要根据自身业务需求调整该尺寸。比如，你的业务中若都是手机尺寸图片，即图片高度远大于宽度，则你需要将设置`IMG_HEIGHT`大于`IMG_WIDTH`（或为`IMG_WIDTH`的倍数）
-* `EPOCHS` 参数表示训练过程中数据集的迭代次数。例如，如果将`EPOCHS` 设置为 10，那么训练将在整个数据集上迭代 10 次。
-* 在每个epoch 中，数据集通常被分成多个批次进行处理。`BATCH_SIZE` 参数表示每个批次中包含的样本数量。
-* `EPOCHS`和`BATCH_SIZE`的不同设置，会影响训练时长；
-* 模型训练完成后，你需求修改`MODEL_FILE_NAME`为最新生成的模型文件名，然后进行图片分类
+* The `(IMG_WIDTH, IMG_HEIGHT)` parameters set the required input image size for the InceptionV3 model. Adjust these dimensions based on your specific business requirements. For example, if your business primarily deals with portrait images (where the height is much larger than the width), set `IMG_HEIGHT` to be greater than `IMG_WIDTH` (or a multiple of `IMG_WIDTH`).
+* The `EPOCHS` represents the number of iterations over the dataset during training. For instance, if you set `EPOCHS` to 10, training will iterate over the entire dataset 10 times.
+* During each epoch, the dataset is typically divided into batches for processing. The `BATCH_SIZE` determines the number of samples in each batch.
+* Different settings for `EPOCHS` and `BATCH_SIZE` will affect training duration.
 
-3. 训练模型
+3. Train the Model:
 ```shell
 python -m picpal.train
 ```
 
-4. 图片分类
+4. Image Classification:
 ```shell
 python -m picpal.predict
 ```
 
-## 作为程序库使用
-你也可以将OpenPicPal作为一个python库在其他业务代码里使用.
-1. 打包发布： 
+
+## Using as a Library
+You can also use OpenPicPal as a Python library in other business code.
+
+1. Build and publish:
 ```
 python setup.py sdist bdist_wheel
-``` 
-2. 在dist目录中找到生成的程序包(如`open-picpal-0.1.0.tar.gz`)并安装：
+```
+
+2. Find the generated package (e.g., open-picpal-0.1.0.tar.gz) in the 'dist' directory and install it:
 ```
 pip install dist/open-picpal-0.1.0.tar.gz
 ```
-3. 在业务代码中使用：
+
+3. Using in business code:
 ```python
 from picpal.train import Trainer
 
-# 训练模型
+# Train the model
 trainer = Trainer(
     epochs=20,
     batch_size=32, 
@@ -124,7 +128,7 @@ trainer = Trainer(
 trainer.train()
 
 
-# 图片分类
+# Image Classification
 from picpal.config import *
 from picpal.predict import Predictor
 
